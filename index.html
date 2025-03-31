@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -7,19 +8,17 @@
         <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
     </head>
 
-    <body style="margin: 0; overflow: hidden;">
+    <body style="margin: 0; overflow: hidden;" onclick="playVideo()">
         <a-scene
             embedded
             loading-screen="enabled: false;"
-            arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;"
-            id="ar-scene"
+            arjs="sourceType: webcam; debugUIEnabled: false;"
         >
             <a-assets>
                 <video
+                    id="vid"
                     src="assets/asset.mp4"
                     preload="auto"
-                    id="vid"
-                    response-type="arraybuffer"
                     loop
                     crossorigin
                     webkit-playsinline
@@ -30,14 +29,9 @@
 
             <a-video
                 src="#vid"
-                position="0 0.1 0"
+                position='0 0.1 0'
                 rotation="-90 0 0"
                 look-at="[gps-camera]"
-                smooth="true"
-                smoothCount="10"
-                smoothTolerance="0.01"
-                smoothThreshold="5"
-                autoplay="false"  <!-- Autoplay impostato su false -->
                 scale="10 10 10"
                 gps-entity-place="latitude: 42.89209809864697; longitude: 13.832430989164692;"
             ></a-video>
@@ -46,40 +40,13 @@
         </a-scene>
 
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Chiedi permessi per fotocamera e sensori
-                if (navigator.permissions) {
-                    navigator.permissions.query({ name: 'camera' }).then(function (result) {
-                        if (result.state === 'granted') {
-                            console.log('Camera access granted');
-                            requestMotionSensorPermission();
-                        } else if (result.state === 'denied') {
-                            alert('Camera access denied');
-                        }
-                    });
-                } else {
-                    requestMotionSensorPermission();
+            function playVideo() {
+                var video = document.getElementById("vid");
+                if (video.paused) {
+                    video.play();
                 }
-            });
-
-            function requestMotionSensorPermission() {
-                // Verifica i permessi per il motion sensor
-                if (window.DeviceOrientationEvent) {
-                    window.addEventListener('deviceorientation', function () {
-                        console.log('Motion sensor is available');
-                        startAR();
-                    });
-                } else {
-                    alert('Motion sensor not supported');
-                }
-            }
-
-            function startAR() {
-                var video = document.querySelector("#vid");
-                video.play(); // Avvia il video una volta che tutti i permessi sono stati concessi
-                var scene = document.querySelector("#ar-scene");
-                scene.setAttribute("arjs", "sourceType: webcam; debugUIEnabled: false; trackingMethod: best;");
             }
         </script>
+
     </body>
 </html>
