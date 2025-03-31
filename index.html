@@ -48,8 +48,8 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                var video = document.querySelector("#vid");
-                video.muted = true;
+                var video = document.getElementById("vid");
+                video.setAttribute("autoplay", "true");
                 video.play();
             });
         </script>
