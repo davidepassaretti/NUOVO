@@ -38,7 +38,7 @@
                 smoothCount="10"
                 smoothTolerance="0.01"
                 smoothThreshold="5"
-                autoplay="true"
+                autoplay
                 scale="10 10 10"
                 gps-entity-place="latitude: 42.89209809864697; longitude: 13.832430989164692;"
             ></a-video>
@@ -49,7 +49,8 @@
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var video = document.querySelector("#vid");
-                video.play().catch(error => console.log("Autoplay bloccato:", error));
+                video.muted = true;
+                video.play();
             });
         </script>
     </body>
