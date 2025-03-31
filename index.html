@@ -11,7 +11,7 @@
         <a-scene
             embedded
             loading-screen="enabled: false;"
-            arjs="sourceType: webcam; debugUIEnabled: false;"
+            arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;"
         >
             <a-assets>
                 <video
@@ -22,25 +22,25 @@
                     loop
                     crossorigin
                     webkit-playsinline
-                    autoplay
                     muted
                     playsinline
                 ></video>
             </a-assets>
 
+            <!-- Aggiusta la posizione e la scala del video in modo che non si deformi -->
             <a-video
                 src="#vid"
-                position='0 0.1 0'
+                position="0 0.1 0"
                 rotation="-90 0 0"
                 look-at="[gps-camera]"
-                videohandler
                 smooth="true"
                 smoothCount="10"
                 smoothTolerance="0.01"
                 smoothThreshold="5"
-                autoplay
+                autoplay="true"
                 scale="10 10 10"
                 gps-entity-place="latitude: 42.89209809864697; longitude: 13.832430989164692;"
+                visible="true"
             ></a-video>
 
             <a-camera gps-camera rotation-reader></a-camera>
@@ -48,10 +48,30 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                var video = document.querySelector("#vid");
-                video.muted = true;
-                video.play();
+                // Richiesta dei permessi per la fotocamera
+                if (navigator.permissions) {
+                    navigator.permissions.query({ name: 'camera' }).then(function (result) {
+                        if (result.state === 'granted') {
+                            console.log('Camera access granted');
+                            startAR();
+                        } else if (result.state === 'denied') {
+                            alert('Permission for camera denied');
+                        } else {
+                            alert('Permission for camera is required');
+                        }
+                    });
+                } else {
+                    startAR();
+                }
             });
+
+            function startAR() {
+                // Avvia la scena AR e il video
+                var video = document.querySelector("#vid");
+                if (video.paused) {
+                    video.play();
+                }
+            }
         </script>
     </body>
 </html>
