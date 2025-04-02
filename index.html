@@ -1,3 +1,4 @@
+
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -6,28 +7,20 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: assets/targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      
-      <!-- Carica il video lava.mp4 dalla cartella assets -->
+    <a-scene mindar-image="imageTargetSrc: "assets/Lava.mp4" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <video id="lavaVideo" src="assets/lava.mp4" autoplay="true" loop="true"></video>
-        <video id="clockVideo" src="assets/clock.mp4" autoplay="true" loop="true"></video>
+        <a-asset-item id="video-lava" src="assets/targets.mind"></a-asset-item>
+        <a-asset-item id="raccoonModel" src="assets/targets2.mind"></a-asset-item>
       </a-assets>
 
-      <!-- Telecamera -->
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Target per interazione con i video -->
-      <!-- Target associato al video lava.mp4 -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-video src="#lavaVideo" position="0 1.5 -3" width="4" height="2" rotation="0 0 0"></a-video>
+        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer>
       </a-entity>
-
-      <!-- Target associato al video clock.mp4 -->
       <a-entity mindar-image-target="targetIndex: 1">
-        <a-video src="#clockVideo" position="0 1.5 -3" width="4" height="2" rotation="0 0 0"></a-video>
+        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer>
       </a-entity>
-
     </a-scene>
   </body>
 </html>
