@@ -5,8 +5,7 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <!-- Scena AR unica -->
-    <a-scene mindar-image="imageTargetSrc: assets/targets.mind; assets/targets2.mind; assets/targets3.mind; assets/targets4.mind; assets/targets5.mind;" 
+    <a-scene mindar-image="imageTargetSrc: assets/targets.mind;" 
              vr-mode-ui="enabled: false" 
              device-orientation-permission-ui="enabled: false">
 
@@ -45,29 +44,27 @@
     </a-scene>
 
     <script>
-      // Funzione per attivare i video quando si trovano i marker
-      function setupVideo(videoId, targetIndex) {
+      // Funzione per avviare e fermare il video in base ai marker
+      function setupVideo(targetIndex, videoId) {
         const video = document.querySelector(videoId);
         const target = document.querySelector(`[mindar-image-target="targetIndex: ${targetIndex}"]`);
 
-        video.addEventListener("canplaythrough", () => {
-          target.addEventListener("targetFound", () => {
-            video.currentTime = 0;
-            video.play();
-          });
+        target.addEventListener("targetFound", () => {
+          video.currentTime = 0;  
+          video.play();          
+        });
 
-          target.addEventListener("targetLost", () => {
-            video.pause();
-          });
+        target.addEventListener("targetLost", () => {
+          video.pause();
         });
       }
 
-      // Associa i video ai marker
-      setupVideo("#lava-video", 0);
-      setupVideo("#clock-video", 1);
-      setupVideo("#cube-video", 2);
-      setupVideo("#game-video", 3);
-      setupVideo("#magma-video", 4);
+      // Associa i video ai rispettivi marker
+      setupVideo(0, "#lava-video");
+      setupVideo(1, "#clock-video");
+      setupVideo(2, "#cube-video");
+      setupVideo(3, "#game-video");
+      setupVideo(4, "#magma-video");
     </script>
   </body>
 </html>
