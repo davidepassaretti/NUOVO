@@ -5,32 +5,25 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <!-- SCENA 1: Targets.mind (Lava.mp4) -->
-    <a-scene mindar-image="imageTargetSrc: ./assets/targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: ./assets/targets.mind, ./assets/targets2.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <video id="lavaVideo" src="./assets/Lava.mp4" loop="true" crossorigin="anonymous"></video>
+        <video id="lavaVideo" src="./assets/Lava.mp4" loop="true" crossorigin="anonymous" autoplay muted></video>
+        <video id="clockVideo" src="./assets/Clock.mp4" loop="true" crossorigin="anonymous" autoplay muted></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
+      <!-- Target 0: Lava.mp4 -->
       <a-entity mindar-image-target="targetIndex: 0">
         <a-video src="#lavaVideo" width="1" height="0.5" position="0 0 0"></a-video>
       </a-entity>
-    </a-scene>
 
-    <!-- SCENA 2: Targets2.mind (Clock.mp4) -->
-    <a-scene mindar-image="imageTargetSrc: ./assets/targets2.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      
-      <a-assets>
-        <video id="clockVideo" src="./assets/Clock.mp4" loop="true" crossorigin="anonymous"></video>
-      </a-assets>
-
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <a-entity mindar-image-target="targetIndex: 0">
+      <!-- Target 1: Clock.mp4 -->
+      <a-entity mindar-image-target="targetIndex: 1">
         <a-video src="#clockVideo" width="1" height="0.5" position="0 0 0"></a-video>
       </a-entity>
+      
     </a-scene>
   </body>
 </html>
