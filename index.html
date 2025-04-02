@@ -24,12 +24,23 @@
     </a-scene>
 
     <script>
-      // Gestisci la riproduzione del video
+      // Recupera il video e l'entity del target
       const video = document.querySelector("#lava-video");
       const target = document.querySelector("a-entity");
 
-      target.addEventListener("targetFound", () => video.play());  // Avvia il video quando il marker è trovato
-      target.addEventListener("targetLost", () => video.pause());  // Ferma il video quando il marker è perso
+      // Aspetta che il video sia pronto prima di avviarlo
+      video.addEventListener('canplaythrough', () => {
+        // Quando il marker è trovato, avvia il video
+        target.addEventListener("targetFound", () => {
+          video.currentTime = 0;  // Riporta il video all'inizio
+          video.play();          // Avvia il video
+        });
+
+        // Quando il marker è perso, ferma il video
+        target.addEventListener("targetLost", () => {
+          video.pause();
+        });
+      });
     </script>
   </body>
 </html>
