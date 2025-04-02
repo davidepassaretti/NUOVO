@@ -38,3 +38,13 @@
         target.addEventListener("targetFound", () => {
           video.currentTime = 0;  // Riporta il video all'inizio
           video.play();          // Avvia il video
+        });
+
+        // Quando il marker è perso, ferma il video
+        target.addEventListener("targetLost", () => {
+          video.pause();
+        });
+      });
+    </script>
+  </body>
+</html>
