@@ -5,69 +5,42 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <!-- Scena AR unica -->
-    <a-scene mindar-image="imageTargetSrc: assets/targets.mind; assets/targets2.mind; assets/targets3.mind; assets/targets4.mind; assets/targets5.mind;" 
-             vr-mode-ui="enabled: false" 
-             device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: assets/targets.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
       <a-assets>
-        <video id="lava-video" src="assets/Lava.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
-        <video id="clock-video" src="assets/Clock.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
-        <video id="cube-video" src="assets/Cube.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
-        <video id="game-video" src="assets/Game.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
-        <video id="magma-video" src="assets/Magma.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
+        <!-- Carica il video Lava3 -->
+        <video id="lava-video" src="assets/Lava3.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
       </a-assets>
 
-      <!-- Camera -->
+      <!-- Aggiungi la camera per la visualizzazione -->
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Marker per ogni video -->
+      <!-- Target per il marker -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane material="src: #lava-video" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
-
-      <a-entity mindar-image-target="targetIndex: 1">
-        <a-plane material="src: #clock-video" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
-
-      <a-entity mindar-image-target="targetIndex: 2">
-        <a-plane material="src: #cube-video" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
-
-      <a-entity mindar-image-target="targetIndex: 3">
-        <a-plane material="src: #game-video" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
-
-      <a-entity mindar-image-target="targetIndex: 4">
-        <a-plane material="src: #magma-video" position="0 0 0" height="1" width="1"></a-plane>
+        <!-- Piano che visualizza il video -->
+        <a-plane material="src: #lava-video; repeat: 1 1" position="0 0 0" height="1" width="1"></a-plane>
       </a-entity>
 
     </a-scene>
 
     <script>
-      // Funzione per attivare i video quando si trovano i marker
-      function setupVideo(videoId, targetIndex) {
-        const video = document.querySelector(videoId);
-        const target = document.querySelector(`[mindar-image-target="targetIndex: ${targetIndex}"]`);
+      // Recupera il video e l'entity del target
+      const video = document.querySelector("#lava-video");
+      const target = document.querySelector("a-entity");
 
-        video.addEventListener("canplaythrough", () => {
-          target.addEventListener("targetFound", () => {
-            video.currentTime = 0;
-            video.play();
-          });
-
-          target.addEventListener("targetLost", () => {
-            video.pause();
-          });
+      // Aspetta che il video sia pronto prima di avviarlo
+      video.addEventListener('canplaythrough', () => {
+        // Quando il marker è trovato, avvia il video
+        target.addEventListener("targetFound", () => {
+          video.currentTime = 0;  // Riporta il video all'inizio
+          video.play();          // Avvia il video
         });
-      }
 
-      // Associa i video ai marker
-      setupVideo("#lava-video", 0);
-      setupVideo("#clock-video", 1);
-      setupVideo("#cube-video", 2);
-      setupVideo("#game-video", 3);
-      setupVideo("#magma-video", 4);
+        // Quando il marker è perso, ferma il video
+        target.addEventListener("targetLost", () => {
+          video.pause();
+        });
+      });
     </script>
   </body>
 </html>
