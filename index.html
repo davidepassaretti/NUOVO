@@ -6,9 +6,7 @@
   </head>
   <body>
     <!-- Scena AR -->
-    <a-scene mindar-image="imageTargetSrc: assets/targets.mind; assets/targets2.mind; assets/targets3.mind; assets/targets4.mind; assets/targets5.mind;" 
-             vr-mode-ui="enabled: false" 
-             device-orientation-permission-ui="enabled: false">
+    <a-scene vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
       <a-assets>
         <video id="lava-video" src="assets/Lava.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
@@ -20,46 +18,47 @@
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Marker e video associati -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane material="src: #lava-video" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
+      <!-- Marker per ogni video -->
+      <a-scene mindar-image="imageTargetSrc: assets/targets.mind">
+        <a-entity mindar-image-target="targetIndex: 0">
+          <a-plane material="src: #lava-video" position="0 0 0" height="1" width="1"></a-plane>
+        </a-entity>
+      </a-scene>
 
-      <a-entity mindar-image-target="targetIndex: 1">
-        <a-plane material="src: #clock-video" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
+      <a-scene mindar-image="imageTargetSrc: assets/targets2.mind">
+        <a-entity mindar-image-target="targetIndex: 0">
+          <a-plane material="src: #clock-video" position="0 0 0" height="1" width="1"></a-plane>
+        </a-entity>
+      </a-scene>
 
-      <a-entity mindar-image-target="targetIndex: 2">
-        <a-plane material="src: #cube-video" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
+      <a-scene mindar-image="imageTargetSrc: assets/targets3.mind">
+        <a-entity mindar-image-target="targetIndex: 0">
+          <a-plane material="src: #cube-video" position="0 0 0" height="1" width="1"></a-plane>
+        </a-entity>
+      </a-scene>
 
-      <a-entity mindar-image-target="targetIndex: 3">
-        <a-plane material="src: #game-video" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
+      <a-scene mindar-image="imageTargetSrc: assets/targets4.mind">
+        <a-entity mindar-image-target="targetIndex: 0">
+          <a-plane material="src: #game-video" position="0 0 0" height="1" width="1"></a-plane>
+        </a-entity>
+      </a-scene>
 
-      <a-entity mindar-image-target="targetIndex: 4">
-        <a-plane material="src: #magma-video" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
+      <a-scene mindar-image="imageTargetSrc: assets/targets5.mind">
+        <a-entity mindar-image-target="targetIndex: 0">
+          <a-plane material="src: #magma-video" position="0 0 0" height="1" width="1"></a-plane>
+        </a-entity>
+      </a-scene>
 
     </a-scene>
 
     <script>
-      // Associa i video ai marker
-      const videoTargets = [
-        { videoId: "lava-video", targetIndex: 0 },
-        { videoId: "clock-video", targetIndex: 1 },
-        { videoId: "cube-video", targetIndex: 2 },
-        { videoId: "game-video", targetIndex: 3 },
-        { videoId: "magma-video", targetIndex: 4 }
-      ];
-
-      videoTargets.forEach(({ videoId, targetIndex }) => {
-        const video = document.querySelector(`#${videoId}`);
-        const target = document.querySelector(`[mindar-image-target="targetIndex: ${targetIndex}"]`);
+      function setupVideo(targetId, videoId) {
+        const video = document.querySelector(videoId);
+        const target = document.querySelector(targetId);
 
         video.addEventListener("canplaythrough", () => {
           target.addEventListener("targetFound", () => {
-            video.currentTime = 0; 
+            video.currentTime = 0;
             video.play();
           });
 
@@ -67,7 +66,13 @@
             video.pause();
           });
         });
-      });
+      }
+
+      setupVideo("[mindar-image-target='targetIndex: 0']", "#lava-video");
+      setupVideo("[mindar-image-target='targetIndex: 0']", "#clock-video");
+      setupVideo("[mindar-image-target='targetIndex: 0']", "#cube-video");
+      setupVideo("[mindar-image-target='targetIndex: 0']", "#game-video");
+      setupVideo("[mindar-image-target='targetIndex: 0']", "#magma-video");
     </script>
   </body>
 </html>
