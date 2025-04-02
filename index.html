@@ -1,4 +1,3 @@
-
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,35 +6,30 @@
   </head>
   <body>
     <a-scene mindar-image="imageTargetSrc: assets/targets.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      
+
       <a-assets>
-        <!-- Video che sarà riprodotto quando il marker viene trovato -->
+        <!-- Carica il video Lava3 -->
         <video id="lava-video" src="assets/Lava3.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
       </a-assets>
 
+      <!-- Aggiungi la camera per la visualizzazione -->
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
+      <!-- Target per il marker -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <!-- Piano che ospita il video -->
+        <!-- Piano che visualizza il video -->
         <a-plane material="src: #lava-video; repeat: 1 1" position="0 0 0" height="1" width="1"></a-plane>
       </a-entity>
-      
+
     </a-scene>
 
     <script>
-      // Recuperiamo il video e l'entity del target
+      // Gestisci la riproduzione del video
       const video = document.querySelector("#lava-video");
       const target = document.querySelector("a-entity");
 
-      // Quando il marker è trovato, avvia il video
-      target.addEventListener("targetFound", () => {
-        video.play();
-      });
-
-      // Quando il marker è perso, ferma il video
-      target.addEventListener("targetLost", () => {
-        video.pause();
-      });
+      target.addEventListener("targetFound", () => video.play());  // Avvia il video quando il marker è trovato
+      target.addEventListener("targetLost", () => video.pause());  // Ferma il video quando il marker è perso
     </script>
   </body>
 </html>
