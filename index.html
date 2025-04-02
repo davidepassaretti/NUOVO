@@ -5,83 +5,36 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <!-- Crea una scena per ogni target -->
     <a-scene mindar-image="imageTargetSrc: assets/targets.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+
       <a-assets>
+        <!-- Carica il video Lava3 -->
         <video id="lava-video" src="assets/Lava.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
-      </a-assets>
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane material="src: #lava-video; repeat: 1 1" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
-    </a-scene>
-
-    <a-scene mindar-image="imageTargetSrc: assets/targets2.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      <a-assets>
         <video id="clock-video" src="assets/Clock.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
-      </a-assets>
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane material="src: #clock-video; repeat: 1 1" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
-    </a-scene>
-
-    <a-scene mindar-image="imageTargetSrc: assets/targets3.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      <a-assets>
         <video id="cube-video" src="assets/Cube.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
-      </a-assets>
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane material="src: #cube-video; repeat: 1 1" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
-    </a-scene>
-
-    <a-scene mindar-image="imageTargetSrc: assets/targets4.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      <a-assets>
-        <video id="game-video" src="assets/Game.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
-      </a-assets>
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane material="src: #game-video; repeat: 1 1" position="0 0 0" height="1" width="1"></a-plane>
-      </a-entity>
-    </a-scene>
-
-    <a-scene mindar-image="imageTargetSrc: assets/targets5.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      <a-assets>
+        <video id="h23-video" src="assets/H23.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
         <video id="magma-video" src="assets/Magma.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
       </a-assets>
+
+      <!-- Aggiungi la camera per la visualizzazione -->
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- Target per il marker -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane material="src: #magma-video; repeat: 1 1" position="0 0 0" height="1" width="1"></a-plane>
+        <!-- Piano che visualizza il video -->
+        <a-plane material="src: #lava-video; repeat: 1 1" position="0 0 0" height="1" width="1"></a-plane>
       </a-entity>
+
     </a-scene>
 
     <script>
-      // Lista di scene con video e target
-      const videoTargets = [
-        { videoId: "lava-video", sceneSelector: '[mindar-image="imageTargetSrc: assets/targets.mind;"]' },
-        { videoId: "clock-video", sceneSelector: '[mindar-image="imageTargetSrc: assets/targets2.mind;"]' },
-        { videoId: "cube-video", sceneSelector: '[mindar-image="imageTargetSrc: assets/targets3.mind;"]' },
-        { videoId: "game-video", sceneSelector: '[mindar-image="imageTargetSrc: assets/targets4.mind;"]' },
-        { videoId: "magma-video", sceneSelector: '[mindar-image="imageTargetSrc: assets/targets5.mind;"]' }
-      ];
+      // Recupera il video e l'entity del target
+      const video = document.querySelector("#lava-video");
+      const target = document.querySelector("a-entity");
 
-      videoTargets.forEach(({ videoId, sceneSelector }) => {
-        const video = document.querySelector(`#${videoId}`);
-        const scene = document.querySelector(sceneSelector);
-        const target = scene.querySelector("a-entity");
-
-        video.addEventListener("canplaythrough", () => {
-          target.addEventListener("targetFound", () => {
-            video.currentTime = 0;
-            video.play();
-          });
-
-          target.addEventListener("targetLost", () => {
-            video.pause();
-          });
-        });
-      });
-    </script>
-  </body>
-</html>
+      // Aspetta che il video sia pronto prima di avviarlo
+      video.addEventListener('canplaythrough', () => {
+        // Quando il marker è trovato, avvia il video
+        target.addEventListener("targetFound", () => {
+          video.currentTime = 0;  // Riporta il video all'inizio
+          video.play();          // Avvia il video
