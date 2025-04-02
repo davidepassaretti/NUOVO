@@ -5,40 +5,36 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <a-scene 
-      mindar-image="imageTargetSrc: assets/targets.mind;" 
-      vr-mode-ui="enabled: false" 
-      device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: assets/targets.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <video id="lava-video" src="assets/Lava.mp4" loop="true" autoplay="false" crossorigin="anonymous"></video>
+        <!-- Video che sarà riprodotto quando il marker viene trovato -->
+        <video id="lava-video" src="assets/Lava.mp4" loop="true" autoplay="false" muted="true" crossorigin="anonymous"></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity mindar-image-target="targetIndex: 0" id="video-target">
-        <a-plane 
-          material="shader: flat; src: #lava-video;" 
-          position="0 0 0" 
-          height="1" 
-          width="1" 
-          rotation="0 0 0">
-        </a-plane>
+      <a-entity mindar-image-target="targetIndex: 0">
+        <!-- Piano che ospita il video -->
+        <a-plane material="src: #lava-video; repeat: 1 1" position="0 0 0" height="1" width="1"></a-plane>
       </a-entity>
+
     </a-scene>
 
     <script>
+      // Recuperiamo il video e l'entity del target
       const video = document.querySelector("#lava-video");
-      const target = document.querySelector("#video-target");
+      const target = document.querySelector("a-entity");
 
+      // Quando il marker è trovato, avvia il video
       target.addEventListener("targetFound", () => {
         video.play();
       });
 
+      // Quando il marker è perso, ferma il video
       target.addEventListener("targetLost", () => {
         video.pause();
       });
     </script>
-
   </body>
 </html>
