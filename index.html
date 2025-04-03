@@ -1,26 +1,46 @@
-
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: "assets/Lava.mp4" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene 
+      mindar-image="imageTargetSrc: assets/targets.mind" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
+      
       <a-assets>
-        <a-asset-item id="video-lava" src="assets/targets.mind"></a-asset-item>
-        <a-asset-item id="raccoonModel" src="assets/targets2.mind"></a-asset-item>
+        <!-- Video assets -->
+        <video id="video-lava" src="assets/Lava.mp4" preload="auto" loop muted playsinline></video>
+        <video id="video-waterfall" src="assets/Waterfall.mp4" preload="auto" loop muted playsinline></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
+      <!-- Target 0 - Mostra il video Lava -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer>
+        <a-video src="#video-lava" width="1" height="0.5" position="0 0 0"></a-video>
       </a-entity>
+
+      <!-- Target 1 - Mostra il video Waterfall -->
       <a-entity mindar-image-target="targetIndex: 1">
-        <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer>
+        <a-video src="#video-waterfall" width="1" height="0.5" position="0 0 0"></a-video>
       </a-entity>
+
     </a-scene>
+
+    <script>
+      // Avvio automatico dei video quando i target sono rilevati
+      document.querySelectorAll("a-video").forEach((videoEl) => {
+        const video = videoEl.getAttribute("src");
+        videoEl.addEventListener("loadeddata", () => {
+          videoEl.components.material.material.map.image.play();
+        });
+      });
+    </script>
+
   </body>
 </html>
