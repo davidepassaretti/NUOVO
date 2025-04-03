@@ -6,37 +6,52 @@
   </head>
   <body>
     <a-scene 
-      mindar-image="imageTargetSrc: assets/targets.mind" 
       color-space="sRGB" 
       renderer="colorManagement: true, physicallyCorrectLights" 
       vr-mode-ui="enabled: false" 
       device-orientation-permission-ui="enabled: false">
-      
-      <a-assets>
-        <!-- Video asset -->
-        <video id="video-lava" src="assets/Lava.mp4" preload="auto" loop muted playsinline></video>
-      </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <!-- Prima scena per targets.mind (Lava.mp4) -->
+      <a-scene mindar-image="imageTargetSrc: assets/targets.mind">
+        <a-assets>
+          <video id="video-lava" src="assets/Lava.mp4" preload="auto" loop muted playsinline></video>
+        </a-assets>
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        <a-entity mindar-image-target="targetIndex: 0">
+          <a-video src="#video-lava" width="1" height="1" position="0 0 0"></a-video>
+        </a-entity>
+      </a-scene>
 
-      <!-- Target 0 - Mostra il video Lava (quadrato 1:1) -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-video src="#video-lava" width="1" height="1" position="0 0 0"></a-video>
-      </a-entity>
+      <!-- Seconda scena per targets2.mind (Clock.mp4) -->
+      <a-scene mindar-image="imageTargetSrc: assets/targets2.mind">
+        <a-assets>
+          <video id="video-clock" src="assets/Clock.mp4" preload="auto" loop muted playsinline></video>
+        </a-assets>
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        <a-entity mindar-image-target="targetIndex: 0">
+          <a-video src="#video-clock" width="1" height="1" position="0 0 0"></a-video>
+        </a-entity>
+      </a-scene>
 
     </a-scene>
 
     <script>
-      // Avvia automaticamente il video quando il target viene rilevato
-      const video = document.querySelector("#video-lava");
+      // Funzione per gestire il play/pause dei video quando il target viene trovato o perso
+      function setupVideo(targetSelector, videoSelector) {
+        const target = document.querySelector(targetSelector);
+        const video = document.querySelector(videoSelector);
 
-      document.querySelector("a-entity[mindar-image-target]").addEventListener("targetFound", () => {
-        video.play();
-      });
+        target.addEventListener("targetFound", () => {
+          video.play();
+        });
 
-      document.querySelector("a-entity[mindar-image-target]").addEventListener("targetLost", () => {
-        video.pause();
-      });
+        target.addEventListener("targetLost", () => {
+          video.pause();
+        });
+      }
+
+      setupVideo("a-entity[mindar-image-target]:nth-child(1)", "#video-lava");
+      setupVideo("a-entity[mindar-image-target]:nth-child(2)", "#video-clock");
     </script>
 
   </body>
