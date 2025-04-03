@@ -6,40 +6,36 @@
   </head>
   <body>
     <a-scene 
+      mindar-image="imageTargetSrc: assets/targets.mind, assets/targets2.mind" 
       color-space="sRGB" 
       renderer="colorManagement: true, physicallyCorrectLights" 
       vr-mode-ui="enabled: false" 
       device-orientation-permission-ui="enabled: false">
+      
+      <a-assets>
+        <!-- Video assets -->
+        <video id="video-lava" src="assets/Lava.mp4" preload="auto" loop muted playsinline></video>
+        <video id="video-clock" src="assets/Clock.mp4" preload="auto" loop muted playsinline></video>
+      </a-assets>
 
-      <!-- Prima scena per targets.mind (Lava.mp4) -->
-      <a-scene mindar-image="imageTargetSrc: assets/targets.mind">
-        <a-assets>
-          <video id="video-lava" src="assets/Lava.mp4" preload="auto" loop muted playsinline></video>
-        </a-assets>
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-        <a-entity mindar-image-target="targetIndex: 0">
-          <a-video src="#video-lava" width="1" height="1" position="0 0 0"></a-video>
-        </a-entity>
-      </a-scene>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Seconda scena per targets2.mind (Clock.mp4) -->
-      <a-scene mindar-image="imageTargetSrc: assets/targets2.mind">
-        <a-assets>
-          <video id="video-clock" src="assets/Clock.mp4" preload="auto" loop muted playsinline></video>
-        </a-assets>
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-        <a-entity mindar-image-target="targetIndex: 0">
-          <a-video src="#video-clock" width="1" height="1" position="0 0 0"></a-video>
-        </a-entity>
-      </a-scene>
+      <!-- Target 0 - Lava.mp4 -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-video id="lava-video" src="#video-lava" width="1" height="1" position="0 0 0"></a-video>
+      </a-entity>
+
+      <!-- Target 1 - Clock.mp4 -->
+      <a-entity mindar-image-target="targetIndex: 1">
+        <a-video id="clock-video" src="#video-clock" width="1" height="1" position="0 0 0"></a-video>
+      </a-entity>
 
     </a-scene>
 
     <script>
-      // Funzione per gestire il play/pause dei video quando il target viene trovato o perso
-      function setupVideo(targetSelector, videoSelector) {
-        const target = document.querySelector(targetSelector);
-        const video = document.querySelector(videoSelector);
+      function setupVideo(targetIndex, videoId) {
+        const target = document.querySelector(`a-entity[mindar-image-target="targetIndex: ${targetIndex}"]`);
+        const video = document.querySelector(videoId);
 
         target.addEventListener("targetFound", () => {
           video.play();
@@ -50,8 +46,8 @@
         });
       }
 
-      setupVideo("a-entity[mindar-image-target]:nth-child(1)", "#video-lava");
-      setupVideo("a-entity[mindar-image-target]:nth-child(2)", "#video-clock");
+      setupVideo(0, "#video-lava");
+      setupVideo(1, "#video-clock");
     </script>
 
   </body>
