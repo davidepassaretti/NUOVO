@@ -1,3 +1,4 @@
+
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,22 +14,17 @@
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
-        <!-- Caricamento dei video -->
-        <video id="video-lava" src="assets/Lava.mp4" preload="auto" loop muted playsinline></video>
+        <!-- Caricamento del video per il target CLOCK -->
         <video id="video-clock" src="assets/Clock.mp4" preload="auto" loop muted playsinline></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Target 0 - Mostra Lava.mp4 (associato al target LAVA) -->
+      <!-- Target 0 - Mostra Clock.mp4 -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-video src="#video-lava" width="1" height="1" position="0 0 0"></a-video>
-      </a-entity>
-
-      <!-- Target 1 - Mostra Clock.mp4 (associato al target CLOCK) -->
-      <a-entity mindar-image-target="targetIndex: 1">
         <a-video src="#video-clock" width="1" height="1" position="0 0 0"></a-video>
       </a-entity>
+
     </a-scene>
 
     <script>
@@ -37,17 +33,18 @@
         const video = document.querySelector(videoId);
 
         target.addEventListener("targetFound", () => {
+          console.log(`Target ${targetIndex} trovato!`);
           video.play();
         });
 
         target.addEventListener("targetLost", () => {
+          console.log(`Target ${targetIndex} perso!`);
           video.pause();
         });
       }
 
-      // Associa video ai target LAVA e CLOCK
-      setupVideo(0, "#video-lava");  // Quando il target LAVA (index 0) viene trovato, si avvia il video "lava"
-      setupVideo(1, "#video-clock"); // Quando il target CLOCK (index 1) viene trovato, si avvia il video "clock"
+      // Associa il video al target CLOCK
+      setupVideo(0, "#video-clock");  // Quando il target 0 viene trovato, si avvia il video "clock"
     </script>
 
   </body>
