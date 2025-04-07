@@ -1,51 +1,42 @@
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  </head>
-  <body>
-    <a-scene
-      mindar-image="imageTargetSrc: assets/targetsfile.mind"
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-    >
-      <a-assets>
-        <video id="video-lava" src="assets/Lava.mp4" preload="auto" loop muted playsinline></video>
-        <video id="video-clock" src="assets/Clock.mp4" preload="auto" loop muted playsinline></video>
-      </a-assets>
+<a-scene
+  mindar-image="imageTargetSrc: assets/targetsfile.mind"
+  color-space="sRGB"
+  renderer="colorManagement: true, physicallyCorrectLights"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: false"
+>
+  <a-assets>
+    <video id="video-lava" src="assets/Lava.mp4" preload="auto" loop muted playsinline></video>
+    <video id="video-clock" src="assets/Clock.mp4" preload="auto" loop muted playsinline></video>
+  </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Target 0 - Mostra Clock.mp4 -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-video src="#video-clock" width="1" height="1" position="0 0 0" material="shader: flat"></a-video>
-      </a-entity>
+  <!-- Target 0 - Mostra Lava.mp4 -->
+  <a-entity mindar-image-target="targetIndex: 0">
+    <a-video src="#video-lava" width="1" height="1" position="0 0 0" material="shader: flat"></a-video>
+  </a-entity>
 
-      <!-- Target 1 - Mostra Lava.mp4 -->
-      <a-entity mindar-image-target="targetIndex: 1">
-        <a-video src="#video-lava" width="1" height="1" position="0 0 0" material="shader: flat"></a-video>
-      </a-entity>
-    </a-scene>
+  <!-- Target 1 - Mostra Clock.mp4 -->
+  <a-entity mindar-image-target="targetIndex: 1">
+    <a-video src="#video-clock" width="1" height="1" position="0 0 0" material="shader: flat"></a-video>
+  </a-entity>
+</a-scene>
 
-    <script>
-      function setupVideo(targetIndex, videoId) {
-        const target = document.querySelector(`a-entity[mindar-image-target="targetIndex: ${targetIndex}"]`);
-        const video = document.querySelector(videoId);
+<script>
+  function setupVideo(targetIndex, videoId) {
+    const target = document.querySelector(`a-entity[mindar-image-target="targetIndex: ${targetIndex}"]`);
+    const video = document.querySelector(videoId);
 
-        target.addEventListener("targetFound", () => {
-          video.play();
-        });
+    target.addEventListener("targetFound", () => {
+      video.play();
+    });
 
-        target.addEventListener("targetLost", () => {
-          video.pause();
-        });
-      }
+    target.addEventListener("targetLost", () => {
+      video.pause();
+    });
+  }
 
-      setupVideo(0, "#video-clock"); // Clock sul target 0
-      setupVideo(1, "#video-lava");  // Lava sul target 1
-    </script>
-  </body>
-</html>
+  setupVideo(0, "#video-lava");  // Associa il video "lava" al target con index 0
+  setupVideo(1, "#video-clock"); // Associa il video "clock" al target con index 1
+</script>
